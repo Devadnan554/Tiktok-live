@@ -1,4 +1,4 @@
-import sys , os , threading
+import sys , os 
 normal_color = "\033[0;31m"
 info_color = "\033[0;31m"
 red_color = "\033[0;31m"
@@ -39,7 +39,10 @@ developer_snapchat : devadnan
 ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
 ''')
 
-client: TikTokLiveClient = TikTokLiveClient(unique_id="@raily_clean")
+username = input(green_color+"insert username for Client ==> "+detect_color)
+
+
+client: TikTokLiveClient = TikTokLiveClient(unique_id="@"+username)
 
 
 # Define how you want to handle specific events via decorator
