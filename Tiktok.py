@@ -9,7 +9,7 @@ banner_color="\033[0;31m"
 end_banner_color="\033[0;31m"
 from colorama import Fore, Back, Style
 from TikTokLive import TikTokLiveClient
-from TikTokLive.types.events import CommentEvent, ConnectEvent , LikeEvent ,DisconnectEvent , LikeEvent , JoinEvent , GiftEvent
+from TikTokLive.types.events import CommentEvent, ConnectEvent , LikeEvent ,DisconnectEvent , LikeEvent , JoinEvent , GiftEvent , ShareEvent , UnknownEvent
 from bidi.algorithm import get_display
 import arabic_reshaper
 linux = 'clear'
@@ -85,7 +85,27 @@ async def on_join(event: JoinEvent):
     bidi_userjoin = get_display(reshaped_userjoin)
     print(green_color+ bidi_userjoin +" ==> "+detect_color+"join the room")
 
+@client.on("share")
+async def on_share(event: ShareEvent):
+    print(green_color+f"@{event.user.unique_id}  "+detect_color+"shared the stream!")
 
+
+@client.on("unknown")
+async def on_connect(event: UnknownEvent):
+    print(green_color+f"Event Type: "+detect_color+f" {event.type}")
+    print(green_color+f"Event Base64:"+detect_color+f" {event.base64}")
+
+
+
+@client.on("error")
+async def on_connect(error: Exception):
+    # Handle the error
+    if isinstance(error, SomeRandomError):
+        print(green_color+"Handle some error!")
+        return
+     # Otherwise, log the error
+    # You can use the internal method, but ideally your own
+    client._log_error(error)
 if __name__ == '__main__':
     # Run the client and block the main thread
     # await client.start() to run non-blocking
