@@ -1,0 +1,5 @@
+arabic_reshaper==3.0.0
+colorama==0.4.6
+python_bidi==0.4.2
+TikTokLive==5.0.8
+TikTokLive==5.0.8
