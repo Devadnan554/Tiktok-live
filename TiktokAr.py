@@ -36,8 +36,15 @@ print ('''
                  السناب : devadnan                                                                                                                        
 ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
 ''')
+#Fore: BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, RESET.
+#Back: BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, RESET.
+#Style: DIM, NORMAL, BRIGHT, RESET_ALL
 
-username = input(green_color+"ادخل اسم المستخدم ==> "+detect_color)
+
+
+
+
+username = input(green_color+"ادخل اسم المستخدم --> "+detect_color)
 
 client: TikTokLiveClient = TikTokLiveClient(unique_id="@"+username)
 
@@ -46,7 +53,7 @@ async def on_connect(_: ConnectEvent):
     print(green_color+"تم الاتصال بجلسة :"+detect_color, client.room_id)
 
 async def on_comment(event: CommentEvent): 
-    print(green_color+f"{event.user.nickname} ==>"+detect_color+f" {event.comment}")
+    print(green_color+f"{event.user.nickname} -->"+Fore.BLUE +f" {event.comment}")
 
 client.add_listener("comment", on_comment)
 
@@ -56,7 +63,7 @@ async def on_disconnect(event: DisconnectEvent):
 
 @client.on("like")
 async def on_like(event: LikeEvent):
-    print(green_color+f"{event.user.nickname}"+detect_color+" كبس")
+    print(green_color+f"{event.user.nickname}"+Fore.MAGENTA+" --> كبس")
 
 @client.on("live_end")
 async def on_connect(event: LiveEndEvent):
@@ -64,15 +71,17 @@ async def on_connect(event: LiveEndEvent):
 
 @client.on("join")
 async def on_join(event: JoinEvent):
-    print(green_color+f"{event.user.nickname}"+detect_color+" دخل البث")
+    print(green_color+f"{event.user.nickname}"+Fore.CYAN+" --> دخل البث")
 
 @client.on("share")
 async def on_share(event: ShareEvent):
-    print(green_color+f"{event.user.nickname}"+detect_color+" شير البث")
+    print(green_color+f"{event.user.nickname}"+Fore.WHITE+" --> شير البث")
 
 @client.on("follow")
 async def on_follow(event: FollowEvent):
-     print(green_color+f"{event.user.nickname}"+detect_color+" اضاف المضيف")
+     print(green_color+f"{event.user.nickname}"+Back.RED+Fore.BLACK+" اضاف المضيف")
 
 if __name__ == '__main__':
     client.run()
+
+print(Style.RESET_ALL)

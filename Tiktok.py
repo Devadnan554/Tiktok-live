@@ -8,15 +8,13 @@ detect_color = "\033[0;31m"
 banner_color="\033[0;31m"
 end_banner_color="\033[0;31m"
 from colorama import Fore, Back, Style
-from TikTokLive import TikTokLiveClient
-from TikTokLive.types.events import CommentEvent, ConnectEvent , LikeEvent ,DisconnectEvent , LikeEvent , JoinEvent , GiftEvent , ShareEvent , UnknownEvent
+from TikTokLive  import TikTokLiveClient
+from TikTokLive.types.events import ConnectEvent,  ViewerUpdateEvent , CommentEvent, DisconnectEvent ,LikeEvent ,LiveEndEvent,JoinEvent,ShareEvent,FollowEvent
 from bidi.algorithm import get_display
 import arabic_reshaper
 linux = 'clear'
 windows = 'cls'
 os.system([linux, windows][os.name == 'nt'])
-
-
 print(detect_color+'''
               █████████   █████                   █████                                                
   ███░░░░░███ ░░███                   ░░███                                                 
@@ -34,37 +32,30 @@ print(detect_color+'''
 
 print ('''
 ##### ##### ##### ##### ##### ##### ##### ##### ##### #####                                                                                                                                                                                                                                                 
-developer : Abu Layan
-developer_snapchat : devadnan                                                                                                                        
+                المبرمج : ابو ليان
+                 السناب : devadnan                                                                                                                        
 ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
 ''')
+#Fore: BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, RESET.
+#Back: BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, RESET.
+#Style: DIM, NORMAL, BRIGHT, RESET_ALL
 
-username = input(green_color+"insert username for Client ==> "+detect_color)
 
+
+
+
+username = input(green_color+"UserName For Client--> "+detect_color)
 
 client: TikTokLiveClient = TikTokLiveClient(unique_id="@"+username)
 
-
-# Define how you want to handle specific events via decorator
 @client.on("connect")
 async def on_connect(_: ConnectEvent):
-    print(green_color+"Connected to Room ID:"+detect_color, client.room_id)
+    print(green_color+" Connect For id room :"+detect_color, client.room_id)
 
+async def on_comment(event: CommentEvent): 
+    print(green_color+f"{event.user.nickname} -->"+Fore.BLUE +f" {event.comment}")
 
-# Notice no decorator?
-async def on_comment(event: CommentEvent):
-    user = event.user.nickname
-    comment = event.comment
-    reshaped_user = arabic_reshaper.reshape(user)    # correct its shape
-    bidi_user = get_display(reshaped_user)
-    reshaped_comment = arabic_reshaper.reshape(comment)    # correct its shape
-    bidi_comment = get_display(reshaped_comment)    
-    #print(green_color+f"{event.user.nickname} ->"+detect_color+f" {event.comment}")
-    print(green_color+bidi_user+"  ==> "+detect_color+bidi_comment)
-
-# Define handling an event via a "callback"
 client.add_listener("comment", on_comment)
-
 
 @client.on("disconnect")
 async def on_disconnect(event: DisconnectEvent):
@@ -72,41 +63,25 @@ async def on_disconnect(event: DisconnectEvent):
 
 @client.on("like")
 async def on_like(event: LikeEvent):
-    print(green_color+f"{event.user.unique_id}"+detect_color+" liked the stream!")
+    print(green_color+f"{event.user.nickname}"+Fore.MAGENTA+" --> Like the Live")
 
-
-
+@client.on("live_end")
+async def on_connect(event: LiveEndEvent):
+    print(f"Ended Live :(")
 
 @client.on("join")
 async def on_join(event: JoinEvent):
-   # print(green_color+f"{event.user.unique_id}"+detect_color+" joined the stream!")
-    userjoin = event.user.unique_id
-    reshaped_userjoin = arabic_reshaper.reshape(userjoin)    # correct its shape
-    bidi_userjoin = get_display(reshaped_userjoin)
-    print(green_color+ bidi_userjoin +" ==> "+detect_color+"join the room")
+    print(green_color+f"{event.user.nickname}"+Fore.CYAN+" --> join the live")
 
 @client.on("share")
 async def on_share(event: ShareEvent):
-    print(green_color+f"@{event.user.unique_id}  "+detect_color+"shared the stream!")
+    print(green_color+f"{event.user.nickname}"+Fore.WHITE+" --> Has sharing the live ")
 
+@client.on("follow")
+async def on_follow(event: FollowEvent):
+     print(green_color+f"{event.user.nickname}"+Back.RED+Fore.BLACK+" Add the streamer")
 
-@client.on("unknown")
-async def on_connect(event: UnknownEvent):
-    print(green_color+f"Event Type: "+detect_color+f" {event.type}")
-    print(green_color+f"Event Base64:"+detect_color+f" {event.base64}")
-
-
-
-@client.on("error")
-async def on_connect(error: Exception):
-    # Handle the error
-    if isinstance(error, SomeRandomError):
-        print(green_color+"Handle some error!")
-        return
-     # Otherwise, log the error
-    # You can use the internal method, but ideally your own
-    client._log_error(error)
 if __name__ == '__main__':
-    # Run the client and block the main thread
-    # await client.start() to run non-blocking
     client.run()
+
+print(Style.RESET_ALL)
