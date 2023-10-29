@@ -79,7 +79,7 @@ async def on_share(event: ShareEvent):
 
 @client.on("follow")
 async def on_follow(event: FollowEvent):
-     print(green_color+f"{event.user.nickname}"+Back.RED+Fore.BLACK+" Add the streamer")
+     print(green_color+f"{event.user.nickname}"+Back.RED+Fore.WHITE+" Add the streamer"+Style.RESET_ALL)
 
 if __name__ == '__main__':
     client.run()
