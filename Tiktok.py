@@ -11,6 +11,7 @@ from colorama import Fore, Back, Style
 from TikTokLive  import TikTokLiveClient
 from TikTokLive.types.events import ConnectEvent,  ViewerUpdateEvent , CommentEvent, DisconnectEvent ,LikeEvent ,LiveEndEvent,JoinEvent,ShareEvent,FollowEvent
 from bidi.algorithm import get_display
+from datetime import datetime
 import arabic_reshaper
 linux = 'clear'
 windows = 'cls'
@@ -29,59 +30,40 @@ print(detect_color+'''
                                                               ░░░░░░                        
           
 ''')
-
 print ('''
 ##### ##### ##### ##### ##### ##### ##### ##### ##### #####                                                                                                                                                                                                                                                 
                 المبرمج : ابو ليان
                  السناب : devadnan                                                                                                                        
 ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
-''')
-#Fore: BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, RESET.
-#Back: BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, RESET.
-#Style: DIM, NORMAL, BRIGHT, RESET_ALL
-
-
-
-
-
+''')  
+now = datetime.now()
+current_time = now.strftime("%H:%M:%S")
 username = input(green_color+"UserName For Client--> "+detect_color)
-
 client: TikTokLiveClient = TikTokLiveClient(unique_id="@"+username)
-
 @client.on("connect")
 async def on_connect(_: ConnectEvent):
-    print(green_color+" Connect For id room :"+detect_color, client.room_id)
-
+    print(Fore.BLUE+"["+current_time+"] "+ green_color+"["+" Connect For id room ] ", client.room_id)
 async def on_comment(event: CommentEvent): 
-    print(green_color+f"{event.user.nickname} -->"+Fore.BLUE +f" {event.comment}")
-
+    print(Fore.LIGHTBLUE_EX+"["+current_time+"] "+ Fore.LIGHTYELLOW_EX+ "[ Comment from ] "+ green_color+f"{event.user.nickname} -->"+Fore.BLUE +f" {event.comment}")
 client.add_listener("comment", on_comment)
-
 @client.on("disconnect")
 async def on_disconnect(event: DisconnectEvent):
     print(detect_color+"Disconnected")
-
 @client.on("like")
 async def on_like(event: LikeEvent):
-    print(green_color+f"{event.user.nickname}"+Fore.MAGENTA+" --> Like the Live")
-
+    print(Fore.LIGHTBLUE_EX+"["+current_time+"] "+ Fore.LIGHTYELLOW_EX+ "[ Like from ] "+ green_color+f"{event.user.nickname}")
 @client.on("live_end")
 async def on_connect(event: LiveEndEvent):
     print(f"Ended Live :(")
-
 @client.on("join")
 async def on_join(event: JoinEvent):
-    print(green_color+f"{event.user.nickname}"+Fore.CYAN+" --> join the live")
-
+    print(Fore.LIGHTBLUE_EX+"["+current_time+"] "+ Fore.LIGHTYELLOW_EX+ "[ join ] "+ green_color+f"{event.user.nickname}")
 @client.on("share")
 async def on_share(event: ShareEvent):
-    print(green_color+f"{event.user.nickname}"+Fore.WHITE+" --> Has sharing the live ")
-
+    print(Fore.LIGHTBLUE_EX+"["+current_time+"] "+ Fore.LIGHTYELLOW_EX+ "[ Shareing ] "+ green_color+f"{event.user.nickname}")
 @client.on("follow")
 async def on_follow(event: FollowEvent):
-     print(green_color+f"{event.user.nickname}"+Back.RED+Fore.WHITE+" Add the streamer"+Style.RESET_ALL)
-
+     print(Fore.LIGHTBLUE_EX+"["+current_time+"] "+ Fore.LIGHTYELLOW_EX+ "[ Add ] "+ green_color+f"{event.user.nickname}")
 if __name__ == '__main__':
     client.run()
-
 print(Style.RESET_ALL)
