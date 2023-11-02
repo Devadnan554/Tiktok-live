@@ -9,7 +9,7 @@ banner_color="\033[0;31m"
 end_banner_color="\033[0;31m"
 from colorama import Fore, Back, Style
 from TikTokLive  import TikTokLiveClient
-from TikTokLive.types.events import ConnectEvent,  ViewerUpdateEvent , CommentEvent, DisconnectEvent ,LikeEvent ,LiveEndEvent,JoinEvent,ShareEvent,FollowEvent
+from TikTokLive.types.events import ConnectEvent,  ViewerUpdateEvent , CommentEvent, DisconnectEvent ,LikeEvent ,LiveEndEvent,JoinEvent,ShareEvent,FollowEvent,GiftEvent,EnvelopeEvent
 from bidi.algorithm import get_display
 from datetime import datetime
 import arabic_reshaper
@@ -76,6 +76,23 @@ async def on_follow(event: FollowEvent):
      now = datetime.now()
      current_time = now.strftime("%I:%M:%S")
      print(Fore.LIGHTBLUE_EX+"["+current_time+"] "+ Fore.LIGHTYELLOW_EX+ "[ Add ] "+ green_color+f"{event.user.nickname}")
+@client.on("gift")
+async def on_gift(event: GiftEvent):
+    # If it's type 1 and the streak is over
+    if event.gift.info.type != 1:
+        now = datetime.now()
+        current_time = now.strftime("%I:%M:%S")
+        print(Fore.LIGHTBLUE_EX+"["+current_time+"] "+ Fore.LIGHTYELLOW_EX+ "[ Sent Gift ] "+ green_color+ f"{event.user.nickname} --> {event.gift.info.name}")
+@client.on("envelope")
+async def on_connect(event: EnvelopeEvent):
+    now = datetime.now()
+    current_time = now.strftime("%I:%M:%S")
+    print(Fore.LIGHTBLUE_EX+"["+current_time+"] "+ Fore.LIGHTYELLOW_EX+ "[ Treasure Box ] "+ green_color+f"{event.treasure_box_user.nickname} -> {event.treasure_box_data}") 
+@client.on("viewer_update")
+async def on_connect(event: ViewerUpdateEvent):
+    now = datetime.now()
+    current_time = now.strftime("%I:%M:%S")
+    print(Fore.LIGHTBLUE_EX+"["+current_time+"] "+ Fore.LIGHTYELLOW_EX+ "[ Viewer ] "+ green_color, event.viewer_count)
 if __name__ == '__main__':
     client.run()
 print(Style.RESET_ALL)
