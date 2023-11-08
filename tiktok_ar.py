@@ -10,7 +10,7 @@ end_banner_color="\033[0;31m"
 from colorama import Fore, Back, Style
 from TikTokLive  import TikTokLiveClient
 from TikTokLive.types.events import ConnectEvent,  ViewerUpdateEvent , CommentEvent, DisconnectEvent ,LikeEvent ,LiveEndEvent,JoinEvent,ShareEvent,FollowEvent,GiftEvent,EnvelopeEvent
-from bidi.algorithm import get_display as get
+from bidi.algorithm import get_display 
 from datetime import datetime
 import arabic_reshaper as ar
 linux = 'clear'
@@ -54,10 +54,9 @@ if choose == 1:
         now = datetime.now()
         current_time = now.strftime("%I:%M:%S")
         text = "تم الاتصال لبث"
-        text1 = ar.reshape(text)
-        text2 = get.bidi(text1)
-        
-        print(Fore.BLUE+"["+current_time+"] "+ green_color+"["+f" {text2} ] ", client.room_id)
+        reshaped_text = ar.reshape(text)    # correct its shape
+        bidi_text = get_display(reshaped_text)  
+        print(Fore.BLUE+"["+current_time+"] "+ green_color+"["+f" {bidi_text} ] ", client.room_id)
     async def on_comment(event: CommentEvent): 
         now = datetime.now()
         current_time = now.strftime("%I:%M:%S")
