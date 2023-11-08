@@ -55,7 +55,7 @@ if choose == 1:
         current_time = now.strftime("%I:%M:%S")
         text = "تم الاتصال لبث"
         text1 = ar.reshape(text)
-        text2 = get(text1)
+        text2 = get.bidi(text1)
         
         print(Fore.BLUE+"["+current_time+"] "+ green_color+"["+f" {text2} ] ", client.room_id)
     async def on_comment(event: CommentEvent): 
