@@ -21,13 +21,13 @@ os.system([linux, windows][os.name == 'nt'])
 def parse_args():
     
     parser = argparse.ArgumentParser(description="Tiktok Live tool")
-    parser.add_argument("--username", help="profile username", required=True, nargs=1)
+    parser.add_argument("-u", help="profile username", required=True, nargs=1)
     return parser.parse_args()
 
 
 def main():
     args = parse_args()
-    user = args.username
+    user = args.u
     client: TikTokLiveClient = TikTokLiveClient(unique_id="@"+user[0])
     os.system([linux, windows][os.name == 'nt'])
     print(Fore.BLUE+Style.DIM+ '''
