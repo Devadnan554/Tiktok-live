@@ -1,5 +1,6 @@
 import sys , os 
 import argparse
+import json
 normal_color = "\033[0;31m"
 info_color = "\033[0;31m"
 red_color = "\033[0;31m"
@@ -10,7 +11,7 @@ banner_color="\033[0;31m"
 end_banner_color="\033[0;31m"
 from colorama import Fore, Back, Style
 from TikTokLive  import TikTokLiveClient
-from TikTokLive.types.events import ConnectEvent,  ViewerUpdateEvent , CommentEvent, DisconnectEvent ,LikeEvent ,LiveEndEvent,JoinEvent,ShareEvent,FollowEvent,GiftEvent,EnvelopeEvent
+from TikTokLive.types.events import ConnectEvent,  ViewerUpdateEvent , CommentEvent, DisconnectEvent ,LikeEvent ,LiveEndEvent,JoinEvent,ShareEvent,FollowEvent,GiftEvent,EnvelopeEvent,MoreShareEvent,IntroMessageEvent
 from bidi.algorithm import get_display
 from datetime import datetime
 import arabic_reshaper
@@ -41,7 +42,7 @@ def main():
 | $$    $$ \$$     \    \$$$   | $$  | $$ \$$    $$| $$  | $$ \$$    $$| $$  | $$
  \$$$$$$$   \$$$$$$$     \$     \$$   \$$  \$$$$$$$ \$$   \$$  \$$$$$$$ \$$   \$$
                                                                                  
-
+ 
     ''')
     print ('''
     '''+Fore.BLUE+Style.DIM+'''[ + ]'''+Fore.WHITE+''' SnapChat : Devadnan'''+Fore.BLUE+'''         [ + ]'''+Fore.WHITE+''' Insta : Dev.adnan           '''+Fore.BLUE+'''[ + ]'''+Fore.WHITE+''' Tiktok : aama5544
@@ -51,6 +52,17 @@ def main():
         now = datetime.now()
         current_time = now.strftime("%I:%M:%S")
         print(Fore.BLUE+"["+current_time+"] "+ green_color+"["+" ================== Connect For id room ==================> ] ", client.room_id)
+        #print(Fore.BLUE+"["+current_time+"] "+ green_color+"["+" ================== Connect For id room ==================> ] ", client.room_info)
+        top = client.room_info
+        owner = top.get("owner")
+        print(Fore.BLUE+"["+current_time+"] "+ green_color+"["+" ================== owner ==================> ] ")
+        print(Fore.BLUE+"["+current_time+"] "+ green_color+"["+owner["nickname"]+ "  "+owner["bio_description"] + "]")
+        users = top.get("top_fans")
+        print(Fore.BLUE+"["+current_time+"] "+ green_color+"["+" ================== top_fans ==================> ] ")
+        for x in users:
+            user_adnan = x["user"]
+            print(Fore.BLUE+"["+current_time+"] "+ green_color+"["+user_adnan["nickname"]+ "  "+user_adnan["bio_description"] + "]")
+
     async def on_comment(event: CommentEvent): 
         now = datetime.now()
         current_time = now.strftime("%I:%M:%S")
@@ -95,6 +107,13 @@ def main():
         now = datetime.now()
         current_time = now.strftime("%I:%M:%S")
         print(Fore.BLUE+"["+current_time+"] [  👀  Viewer ] "+ Fore.WHITE, event.viewer_count)
+    
+    @client.on("more_share")
+    async def on_connect(event: MoreShareEvent):
+        print(f"More than {event.amount} users have joined from {event.user.unique_id}'s share link!")
+    @client.on("intro_message")
+    async def on_connect(event: IntroMessageEvent):
+        print(f"Message: {event.message}")
     if __name__ == '__main__':
         client.run()
         print(Style.RESET_ALL)
